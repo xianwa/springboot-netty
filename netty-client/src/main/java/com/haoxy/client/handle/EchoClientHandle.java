@@ -1,5 +1,6 @@
 package com.haoxy.client.handle;
 
+import com.fksaas.tms.common.utils.JacksonUtil;
 import com.haoxy.client.util.SpringBeanFactory;
 import com.haoxy.common.model.CustomProtocol;
 import io.netty.buffer.ByteBuf;
@@ -12,6 +13,8 @@ import io.netty.util.CharsetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.ByteBuffer;
+
 /**
  * Created by haoxy on 2018/10/17.
  * E-mail:hxyHelloWorld@163.com
@@ -23,7 +26,7 @@ import org.slf4j.LoggerFactory;
  *  目前，只需继承 SimpleChannelInboundHandler或ChannelInboundHandlerAdapter 而不是自己实现处理程序接口。
  *  我们在这里重写了channelRead0（）事件处理程序方法
  */
-public class EchoClientHandle extends SimpleChannelInboundHandler<ByteBuf> {
+public class EchoClientHandle extends SimpleChannelInboundHandler<CustomProtocol> {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(EchoClientHandle.class);
 
@@ -50,8 +53,14 @@ public class EchoClientHandle extends SimpleChannelInboundHandler<ByteBuf> {
      */
     // todo 把byteBuf改了就报错了，哈哈哈
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf) throws Exception {
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, CustomProtocol obj) throws Exception {
         //从服务端收到消息时被调用
-        LOGGER.info("客户端收到消息={}", byteBuf.toString(CharsetUtil.UTF_8));
+//        if(obj instanceof ByteBuf){
+//        LOGGER.info("客户端收到消息={}", ((ByteBuf)obj).toString(CharsetUtil.UTF_8));
+//        }
+//
+//        if(obj instanceof CustomProtocol){
+            LOGGER.info("客户端收到消息={}", JacksonUtil.serialize(obj));
+//        }
     }
 }

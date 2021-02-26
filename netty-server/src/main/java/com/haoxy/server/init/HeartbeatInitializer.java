@@ -1,5 +1,6 @@
 package com.haoxy.server.init;
 
+import com.haoxy.server.HeartbeatEncode;
 import com.haoxy.server.decode.HeartbeatDecoder;
 import com.haoxy.server.handle.HeartBeatSimpleHandle;
 import io.netty.channel.Channel;
@@ -18,6 +19,7 @@ public class HeartbeatInitializer extends ChannelInitializer<Channel> {
                 //五秒没有收到消息 将IdleStateHandler 添加到 ChannelPipeline 中
                 .addLast(new IdleStateHandler(5, 0, 0))
                 .addLast(new HeartbeatDecoder())
+                .addLast(new HeartbeatEncode())
                 .addLast(new HeartBeatSimpleHandle());
     }
 }

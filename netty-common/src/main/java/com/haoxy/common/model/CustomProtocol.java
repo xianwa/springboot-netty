@@ -9,7 +9,6 @@ import java.io.Serializable;
  */
 public class CustomProtocol implements Serializable {
 
-
     private static final long serialVersionUID = 290429819350651974L;
     private long id;
     private String content;
