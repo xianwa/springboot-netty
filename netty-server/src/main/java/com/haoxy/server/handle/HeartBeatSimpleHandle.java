@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomProtocol> {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(HeartBeatSimpleHandle.class);
-    private static final ByteBuf HEART_BEAT = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer(new CustomProtocol(123456L, "pong").toString(), CharsetUtil.UTF_8));
+    private static final CustomProtocol HEART_BEAT = new CustomProtocol(123456L, "pong");
 
     /**
      * 取消绑定
@@ -56,17 +56,13 @@ public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomPro
         if(customProtocol != null ){
             if(customProtocol.getId() == 1){
                 customProtocol.setContent("1的响应");
-                ByteBuf pong = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer(customProtocol.toString(), CharsetUtil.UTF_8));
-                ctx.writeAndFlush(pong).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+                ctx.writeAndFlush(customProtocol);
             }
             if(customProtocol.getId() == 2){
                 customProtocol.setContent("2的响应");
-//                ByteBuf pong = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer(customProtocol.toString(), CharsetUtil.UTF_8));
-//                ctx.writeAndFlush(pong).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
                 ctx.writeAndFlush(customProtocol);
             }
         }
-        //ctx.writeAndFlush(customProtocol);
         //保存客户端与 Channel 之间的关系
         NettySocketHolder.put(customProtocol.getId(), (NioSocketChannel) ctx.channel());
     }
