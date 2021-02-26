@@ -1,6 +1,8 @@
 package com.haoxy.client.heart;
 
 import com.haoxy.client.init.CustomerHandleInitializer;
+import com.haoxy.common.model.CustomProtocol;
+
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
@@ -47,6 +49,23 @@ public class HeartbeatClient {
             LOGGER.info("启动 Netty 成功");
         }
         socketChannel = (SocketChannel) future.channel();
+    }
+
+    /**
+     * 向服务端发送信息
+     */
+    // todo 客户端向服务端发送消息
+    public void sendData(CustomProtocol customProtocol){
+        //创建连接成功之前停在这里等待
+        while (socketChannel == null || !socketChannel.isActive()) {
+            System.out.println("等待连接···");
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        socketChannel.writeAndFlush(customProtocol);
     }
 
 }
