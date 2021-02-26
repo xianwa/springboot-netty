@@ -27,6 +27,7 @@ public class EchoClientHandle extends SimpleChannelInboundHandler<ByteBuf> {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(EchoClientHandle.class);
 
+    @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent idleStateEvent = (IdleStateEvent) evt;
@@ -47,6 +48,7 @@ public class EchoClientHandle extends SimpleChannelInboundHandler<ByteBuf> {
      * @param byteBuf
      * @throws Exception
      */
+    // todo 把byteBuf改了就报错了，哈哈哈
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf) throws Exception {
         //从服务端收到消息时被调用

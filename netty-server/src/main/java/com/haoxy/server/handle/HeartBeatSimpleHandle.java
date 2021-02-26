@@ -61,8 +61,9 @@ public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomPro
             }
             if(customProtocol.getId() == 2){
                 customProtocol.setContent("2的响应");
-                ByteBuf pong = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer(customProtocol.toString(), CharsetUtil.UTF_8));
-                ctx.writeAndFlush(pong).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+//                ByteBuf pong = Unpooled.unreleasableBuffer(Unpooled.copiedBuffer(customProtocol.toString(), CharsetUtil.UTF_8));
+//                ctx.writeAndFlush(pong).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+                ctx.writeAndFlush(customProtocol);
             }
         }
         //ctx.writeAndFlush(customProtocol);
