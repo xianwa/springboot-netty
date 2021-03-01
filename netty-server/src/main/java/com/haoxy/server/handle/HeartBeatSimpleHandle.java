@@ -2,16 +2,14 @@ package com.haoxy.server.handle;
 
 import com.haoxy.common.model.CustomProtocol;
 import com.haoxy.server.util.NettySocketHolder;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelFuture;
+
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
-import io.netty.util.CharsetUtil;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,16 +52,16 @@ public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomPro
         LOGGER.info("收到customProtocol={}", customProtocol);
         //我们调用writeAndFlush（Object）来逐字写入接收到的消息并刷新线路
         if(customProtocol != null ){
-            if(customProtocol.getId() == 1){
+            if(customProtocol.getComId() == 1){
                 customProtocol.setContent("1的响应");
                 ctx.writeAndFlush(customProtocol);
             }
-            if(customProtocol.getId() == 2){
+            if(customProtocol.getComId() == 2){
                 customProtocol.setContent("2的响应");
                 ctx.writeAndFlush(customProtocol);
             }
         }
         //保存客户端与 Channel 之间的关系
-        NettySocketHolder.put(customProtocol.getId(), (NioSocketChannel) ctx.channel());
+        NettySocketHolder.put(customProtocol.getComId(), (NioSocketChannel) ctx.channel());
     }
 }

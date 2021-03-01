@@ -2,6 +2,7 @@ package com.haoxy.common.model;
 
 import java.io.Serializable;
 
+
 /**
  * Created by haoxy on 2018/10/17.
  * E-mail:hxyHelloWorld@163.com
@@ -10,15 +11,16 @@ import java.io.Serializable;
 public class CustomProtocol implements Serializable {
 
     private static final long serialVersionUID = 290429819350651974L;
-    private long id;
+    private long comId;
+    private SendType sendType;
     private String content;
 
-    public long getId() {
-        return id;
+    public long getComId() {
+        return comId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setComId(long comId) {
+        this.comId = comId;
     }
 
     public String getContent() {
@@ -29,10 +31,20 @@ public class CustomProtocol implements Serializable {
         this.content = content;
     }
 
-    public CustomProtocol(long id, String content) {
-        this.id = id;
+    public SendType getSendType() {
+        return sendType;
+    }
+
+    public void setSendType(SendType sendType) {
+        this.sendType = sendType;
+    }
+
+    public CustomProtocol(long comId, SendType sendType, String content) {
+        this.comId = comId;
+        this.sendType = sendType;
         this.content = content;
     }
+
     public CustomProtocol(){
 
     }
@@ -40,8 +52,12 @@ public class CustomProtocol implements Serializable {
     @Override
     public String toString() {
         return "CustomProtocol{" +
-                "id=" + id +
+                "id=" + comId +
                 ", content='" + content + '\'' +
                 '}';
+    }
+
+    public enum SendType{
+        HEART,TMS_LOGIN,OTHER_LOGIN
     }
 }

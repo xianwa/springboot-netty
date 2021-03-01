@@ -48,19 +48,12 @@ public class EchoClientHandle extends SimpleChannelInboundHandler<CustomProtocol
     /**
      *  每当从服务端接收到新数据时，都会使用收到的消息调用此方法 channelRead0(),在此示例中，接收消息的类型是ByteBuf。
      * @param channelHandlerContext
-     * @param byteBuf
+     * @param customProtocol
      * @throws Exception
      */
-    // todo 把byteBuf改了就报错了，哈哈哈
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, CustomProtocol obj) throws Exception {
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, CustomProtocol customProtocol) throws Exception {
         //从服务端收到消息时被调用
-//        if(obj instanceof ByteBuf){
-//        LOGGER.info("客户端收到消息={}", ((ByteBuf)obj).toString(CharsetUtil.UTF_8));
-//        }
-//
-//        if(obj instanceof CustomProtocol){
-            LOGGER.info("客户端收到消息={}", JacksonUtil.serialize(obj));
-//        }
+            LOGGER.info("客户端收到消息={}", JacksonUtil.serialize(customProtocol));
     }
 }
