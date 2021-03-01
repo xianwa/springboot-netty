@@ -14,17 +14,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by haoxy on 2018/10/17.
- * E-mail:hxyHelloWorld@163.com
- * github:https://github.com/haoxiaoyong1014
+ * Created by haoxy on 2018/10/17. E-mail:hxyHelloWorld@163.com github:https://github.com/haoxiaoyong1014
  */
 public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomProtocol> {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(HeartBeatSimpleHandle.class);
-    private static final CustomProtocol HEART_BEAT = new CustomProtocol(123456L, "pong");
+    private static final CustomProtocol HEART_BEAT = new CustomProtocol(123456L, CustomProtocol.SendType.HEART, "pong");
 
     /**
      * 取消绑定
+     *
      * @param ctx
      * @throws Exception
      */
@@ -51,12 +50,12 @@ public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomPro
         // todo 服务端向客户端发送信息
         LOGGER.info("收到customProtocol={}", customProtocol);
         //我们调用writeAndFlush（Object）来逐字写入接收到的消息并刷新线路
-        if(customProtocol != null ){
-            if(customProtocol.getComId() == 1){
+        if (customProtocol != null) {
+            if (customProtocol.getComId() == 1) {
                 customProtocol.setContent("1的响应");
                 ctx.writeAndFlush(customProtocol);
             }
-            if(customProtocol.getComId() == 2){
+            if (customProtocol.getComId() == 2) {
                 customProtocol.setContent("2的响应");
                 ctx.writeAndFlush(customProtocol);
             }

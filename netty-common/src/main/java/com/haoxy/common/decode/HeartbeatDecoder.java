@@ -1,12 +1,11 @@
-package com.haoxy.client;
+package com.haoxy.common.decode;
 
 import com.haoxy.common.model.CustomProtocol;
-
-import java.util.List;
-
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+
+import java.util.List;
 
 /**
  * Created by haoxy on 2018/10/17.

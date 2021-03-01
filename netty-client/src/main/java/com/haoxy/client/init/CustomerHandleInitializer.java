@@ -1,7 +1,7 @@
 package com.haoxy.client.init;
 
-import com.haoxy.client.HeartbeatDecoder;
-import com.haoxy.client.encode.HeartbeatEncode;
+import com.haoxy.common.decode.HeartbeatDecoder;
+import com.haoxy.common.encode.HeartbeatEncode;
 import com.haoxy.client.handle.EchoClientHandle;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;

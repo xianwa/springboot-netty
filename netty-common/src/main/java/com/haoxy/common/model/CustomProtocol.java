@@ -53,7 +53,7 @@ public class CustomProtocol implements Serializable {
     public String toString() {
         return "CustomProtocol{" +
                 "id=" + comId +
-                ", content='" + content + '\'' +
+                ",sendType="+sendType.name()+"  content='" + content + '\'' +
                 '}';
     }
 
