@@ -13,6 +13,6 @@ public class HeartBeatConfig {
 
     @Bean(value = "heartBeat")
     public CustomProtocol heartBeat() {
-        return new CustomProtocol(0L, CustomProtocol.SendType.HEART, "");
+        return new CustomProtocol(0L, CustomProtocol.SendType.HEART.code, "");
     }
 }

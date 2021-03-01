@@ -18,8 +18,10 @@ import org.slf4j.LoggerFactory;
  */
 public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomProtocol> {
 
-    private final static Logger LOGGER = LoggerFactory.getLogger(HeartBeatSimpleHandle.class);
-    private static final CustomProtocol HEART_BEAT = new CustomProtocol(123456L, CustomProtocol.SendType.HEART, "pong");
+    private final static Logger logger = LoggerFactory.getLogger(HeartBeatSimpleHandle.class);
+    // todo 最后发到客户端的信息为什么会是这样的
+    // 客户端收到消息={"comId":123456,"sendType":0,"content":"pong\u0000\u0000\u0000\u0000"}
+    private static final CustomProtocol HEART_BEAT = new CustomProtocol(123456L, CustomProtocol.SendType.HEART.code, "pong");
 
     /**
      * 取消绑定
@@ -37,7 +39,7 @@ public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomPro
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent idleStateEvent = (IdleStateEvent) evt;
             if (idleStateEvent.state() == IdleState.READER_IDLE) {
-                LOGGER.info("已经5秒没有收到信息！");
+                logger.info("已经5秒没有收到信息！");
                 //向客户端发送消息
                 ctx.writeAndFlush(HEART_BEAT).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
             }
@@ -48,17 +50,21 @@ public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomPro
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, CustomProtocol customProtocol) throws Exception {
         // todo 服务端向客户端发送信息
-        LOGGER.info("收到customProtocol={}", customProtocol);
+        logger.info("收到customProtocol={}", customProtocol);
         //我们调用writeAndFlush（Object）来逐字写入接收到的消息并刷新线路
-        if (customProtocol != null) {
-            if (customProtocol.getComId() == 1) {
-                customProtocol.setContent("1的响应");
-                ctx.writeAndFlush(customProtocol);
+        try {
+            if (customProtocol != null) {
+                if (customProtocol.getComId() == 1) {
+                    customProtocol.setContent("1的响应");
+                    ctx.writeAndFlush(customProtocol);
+                }
+                if (customProtocol.getComId() == 2) {
+                    customProtocol.setContent("2的响应");
+                    ctx.writeAndFlush(customProtocol);
+                }
             }
-            if (customProtocol.getComId() == 2) {
-                customProtocol.setContent("2的响应");
-                ctx.writeAndFlush(customProtocol);
-            }
+        } catch (Exception e) {
+            logger.error("服务端读取客户端消息异常,e:", e);
         }
         //保存客户端与 Channel 之间的关系
         NettySocketHolder.put(customProtocol.getComId(), (NioSocketChannel) ctx.channel());

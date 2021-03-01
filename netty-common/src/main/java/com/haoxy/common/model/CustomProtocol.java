@@ -4,15 +4,13 @@ import java.io.Serializable;
 
 
 /**
- * Created by haoxy on 2018/10/17.
- * E-mail:hxyHelloWorld@163.com
- * github:https://github.com/haoxiaoyong1014
+ * Created by haoxy on 2018/10/17. E-mail:hxyHelloWorld@163.com github:https://github.com/haoxiaoyong1014
  */
 public class CustomProtocol implements Serializable {
 
     private static final long serialVersionUID = 290429819350651974L;
     private long comId;
-    private SendType sendType;
+    private int sendType;
     private String content;
 
     public long getComId() {
@@ -31,21 +29,22 @@ public class CustomProtocol implements Serializable {
         this.content = content;
     }
 
-    public SendType getSendType() {
+
+    public int getSendType() {
         return sendType;
     }
 
-    public void setSendType(SendType sendType) {
+    public void setSendType(int sendType) {
         this.sendType = sendType;
     }
 
-    public CustomProtocol(long comId, SendType sendType, String content) {
+    public CustomProtocol(long comId, int sendType, String content) {
         this.comId = comId;
         this.sendType = sendType;
         this.content = content;
     }
 
-    public CustomProtocol(){
+    public CustomProtocol() {
 
     }
 
@@ -53,11 +52,30 @@ public class CustomProtocol implements Serializable {
     public String toString() {
         return "CustomProtocol{" +
                 "id=" + comId +
-                ",sendType="+sendType.name()+"  content='" + content + '\'' +
+                ",sendType=" + SendType.ofCode(sendType) + "  content='" + content + '\'' +
                 '}';
     }
 
-    public enum SendType{
-        HEART,TMS_LOGIN,OTHER_LOGIN
+    public enum SendType {
+        HEART(0, "heart"),
+        TMS_LOGIN(1, "tms_login"),
+        OTHER_LOGIN(2, "other_login");
+
+        public int code;
+        public String desc;
+
+        SendType(int code, String desc) {
+            this.code = code;
+            this.desc = desc;
+        }
+
+        public static SendType ofCode(int code) {
+            for (SendType sendType : SendType.values()) {
+                if (code == sendType.code) {
+                    return sendType;
+                }
+            }
+            return HEART;
+        }
     }
 }

@@ -17,7 +17,7 @@ public class CustomerHandleInitializer extends ChannelInitializer<Channel> {
     protected void initChannel(Channel channel) throws Exception {
         channel.pipeline()
                 //10 秒没发送消息 将IdleStateHandler 添加到 ChannelPipeline 中
-                .addLast(new IdleStateHandler(0, 10, 0))
+                .addLast(new IdleStateHandler(10, 10, 0))
                 .addLast(new HeartbeatDecoder())
                 .addLast(new HeartbeatEncode())
                 .addLast(new EchoClientHandle());
