@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * Created by haoxy on 2018/10/17. E-mail:hxyHelloWorld@163.com github:https://github.com/haoxiaoyong1014
  */
-public class CustomProtocol implements Serializable {
+public class CustomProtocol  implements Serializable {
 
     private static final long serialVersionUID = 290429819350651974L;
     private long comId;

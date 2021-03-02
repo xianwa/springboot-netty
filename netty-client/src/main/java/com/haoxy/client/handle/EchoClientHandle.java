@@ -59,7 +59,7 @@ public class EchoClientHandle extends SimpleChannelInboundHandler<CustomProtocol
     @Override
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, CustomProtocol customProtocol) throws Exception {
         //从服务端收到消息时被调用
-        logger.info("客户端收到消息={}", JacksonUtil.serialize(customProtocol));
+        logger.info("客户端收到消息={}", customProtocol);
     }
 
     @Override
