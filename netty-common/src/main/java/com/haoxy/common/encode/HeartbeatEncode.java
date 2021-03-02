@@ -15,6 +15,7 @@ public class HeartbeatEncode extends MessageToByteEncoder<CustomProtocol> {
     @Override
     protected void encode(ChannelHandlerContext channelHandlerContext, CustomProtocol customProtocol, ByteBuf byteBuf) throws Exception {
         byteBuf.writeLong(customProtocol.getComId()) ;
+        byteBuf.writeInt(customProtocol.getSendType());
         byteBuf.writeBytes(customProtocol.getContent().getBytes()) ;
     }
 }

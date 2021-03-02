@@ -49,7 +49,7 @@ public class CustomProtocol  implements Serializable {
     }
 
     public enum SendType {
-        HEART(0, "heart"),
+        HEART(120, "heart"),
         TMS_LOGIN(1, "tms_login"),
         OTHER_LOGIN(2, "other_login");
 

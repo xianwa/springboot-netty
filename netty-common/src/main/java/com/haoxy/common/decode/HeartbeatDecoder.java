@@ -17,12 +17,14 @@ public class HeartbeatDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
         long id = byteBuf.readLong();
+        int sendType = byteBuf.readInt();
         byte[] bytes = new byte[byteBuf.readableBytes()];
         byteBuf.readBytes(bytes);
         String content = new String(bytes);
         CustomProtocol customProtocol = new CustomProtocol();
         customProtocol.setComId(id);
         customProtocol.setContent(content);
+        customProtocol.setSendType(sendType);
         list.add(customProtocol);
     }
 }
