@@ -71,6 +71,7 @@ public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomPro
                     respMap.put("successFlag",true);
                     customProtocol.setComId(12L);
                     customProtocol.setContent(JacksonUtil.serialize(respMap));
+                    ctx.writeAndFlush(customProtocol);
                 }
             }
         } catch (Exception e) {
