@@ -62,9 +62,8 @@ public class HeartbeatClient {
     }
 
     /**
-     * 向服务端发送信息
+     * 客户端向服务端发送消息
      */
-    // todo 客户端向服务端发送消息
     public void sendData(CustomProtocol customProtocol) {
         //创建连接成功之前停在这里等待
         while (socketChannel == null || !socketChannel.isActive()) {

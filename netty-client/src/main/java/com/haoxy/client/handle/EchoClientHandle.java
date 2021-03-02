@@ -64,7 +64,6 @@ public class EchoClientHandle extends SimpleChannelInboundHandler<CustomProtocol
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        // todo server停掉后，掉线两次，然后就不再重新连接了
         System.err.println("掉线了...");
         //使用过程中断线重连
         final HeartbeatClient heartbeatClient = SpringBeanFactory.getBean("heartbeatClient", HeartbeatClient.class);

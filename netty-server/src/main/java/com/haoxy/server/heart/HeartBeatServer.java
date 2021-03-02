@@ -44,6 +44,7 @@ public class HeartBeatServer {
      */
     @PostConstruct
     public void start() throws InterruptedException {
+        // todo 将长连接所有状态改为下线
         ServerBootstrap bootstrap = new ServerBootstrap()
                 .group(boss, work)
                 .channel(NioServerSocketChannel.class)

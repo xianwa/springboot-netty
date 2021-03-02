@@ -20,8 +20,6 @@ import org.slf4j.LoggerFactory;
 public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomProtocol> {
 
     private final static Logger logger = LoggerFactory.getLogger(HeartBeatSimpleHandle.class);
-    // todo 最后发到客户端的信息为什么会是这样的
-    // 客户端收到消息={"comId":123456,"sendType":0,"content":"pong\u0000\u0000\u0000\u0000"}
     private static final CustomProtocol HEART_BEAT = new CustomProtocol(123456L, CustomProtocol.SendType.HEART.code, "pong");
 
     /**
@@ -41,7 +39,7 @@ public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomPro
             IdleStateEvent idleStateEvent = (IdleStateEvent) evt;
             if (idleStateEvent.state() == IdleState.READER_IDLE) {
                 logger.info("已经5秒没有收到信息！");
-                // todo 下线 心跳时间调整成一致
+                // todo 下线
                 //向客户端发送消息
                 ctx.writeAndFlush(HEART_BEAT).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
             }
@@ -52,8 +50,6 @@ public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomPro
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, CustomProtocol customProtocol) throws Exception {
         // todo 上线
-
-        // todo 服务端向客户端发送信息
         logger.info("收到customProtocol={}", JacksonUtil.serialize(customProtocol));
         //我们调用writeAndFlush（Object）来逐字写入接收到的消息并刷新线路
         try {
