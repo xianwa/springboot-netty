@@ -1,5 +1,7 @@
 package com.haoxy.server.handle;
 
+import com.google.common.collect.Maps;
+
 import com.fksaas.tms.common.utils.JacksonUtil;
 import com.haoxy.common.model.CustomProtocol;
 import com.haoxy.server.util.NettySocketHolder;
@@ -13,6 +15,8 @@ import io.netty.handler.timeout.IdleStateEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 /**
  * Created by haoxy on 2018/10/17. E-mail:hxyHelloWorld@163.com github:https://github.com/haoxiaoyong1014
@@ -61,6 +65,12 @@ public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomPro
                 if (customProtocol.getComId() == 2) {
                     customProtocol.setContent("2的响应");
                     ctx.writeAndFlush(customProtocol);
+                }
+                if(customProtocol.getSendType() == CustomProtocol.SendType.TMS_LOGIN.code){
+                    Map<String,Object> respMap = Maps.newHashMap();
+                    respMap.put("successFlag",true);
+                    customProtocol.setComId(12L);
+                    customProtocol.setContent(JacksonUtil.serialize(respMap));
                 }
             }
         } catch (Exception e) {
