@@ -48,14 +48,6 @@ public class CustomProtocol  implements Serializable {
 
     }
 
-    @Override
-    public String toString() {
-        return "CustomProtocol{" +
-                "id=" + comId +
-                ",sendType=" + SendType.ofCode(sendType) + "  content='" + content + '\'' +
-                '}';
-    }
-
     public enum SendType {
         HEART(0, "heart"),
         TMS_LOGIN(1, "tms_login"),
