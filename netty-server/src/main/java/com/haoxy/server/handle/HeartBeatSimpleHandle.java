@@ -1,5 +1,6 @@
 package com.haoxy.server.handle;
 
+import com.fksaas.tms.common.utils.JacksonUtil;
 import com.haoxy.common.model.CustomProtocol;
 import com.haoxy.server.util.NettySocketHolder;
 
@@ -40,6 +41,7 @@ public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomPro
             IdleStateEvent idleStateEvent = (IdleStateEvent) evt;
             if (idleStateEvent.state() == IdleState.READER_IDLE) {
                 logger.info("已经5秒没有收到信息！");
+                // todo 下线 心跳时间调整成一致
                 //向客户端发送消息
                 ctx.writeAndFlush(HEART_BEAT).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
             }
@@ -49,8 +51,10 @@ public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomPro
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, CustomProtocol customProtocol) throws Exception {
+        // todo 上线
+
         // todo 服务端向客户端发送信息
-        logger.info("收到customProtocol={}", customProtocol);
+        logger.info("收到customProtocol={}", JacksonUtil.serialize(customProtocol));
         //我们调用writeAndFlush（Object）来逐字写入接收到的消息并刷新线路
         try {
             if (customProtocol != null) {

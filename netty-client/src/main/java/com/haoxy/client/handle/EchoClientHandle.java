@@ -39,7 +39,7 @@ public class EchoClientHandle extends SimpleChannelInboundHandler<CustomProtocol
                 HeartbeatClient heartbeatClient = SpringBeanFactory.getBean("heartbeatClient", HeartbeatClient.class);
                 heartbeatClient.doConnect();
             } else if (idleStateEvent.state() == IdleState.WRITER_IDLE) {
-                logger.info("已经10秒没收到消息了");
+                logger.info("已经10秒没推送消息了");
                 //向服务端发送消息
                 CustomProtocol heartBeat = SpringBeanFactory.getBean("heartBeat", CustomProtocol.class);
                 ctx.writeAndFlush(heartBeat).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
@@ -64,10 +64,17 @@ public class EchoClientHandle extends SimpleChannelInboundHandler<CustomProtocol
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+        // todo server停掉后，掉线两次，然后就不再重新连接了
         System.err.println("掉线了...");
         //使用过程中断线重连
-        HeartbeatClient heartbeatClient = SpringBeanFactory.getBean("heartbeatClient", HeartbeatClient.class);
-        heartbeatClient.doConnect();
+        final HeartbeatClient heartbeatClient = SpringBeanFactory.getBean("heartbeatClient", HeartbeatClient.class);
+        final EventLoop eventLoop = ctx.channel().eventLoop();
+        eventLoop.schedule(new Runnable() {
+            @Override
+            public void run() {
+                heartbeatClient.doConnect();
+            }
+        }, 5L, TimeUnit.SECONDS);
         super.channelInactive(ctx);
     }
 }

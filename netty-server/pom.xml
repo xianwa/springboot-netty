@@ -43,5 +43,10 @@
             <artifactId>protobuf-java</artifactId>
             <version>3.4.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.fksaas</groupId>
+            <artifactId>tms-common</artifactId>
+            <version>1.3.7</version>
+        </dependency>
     </dependencies>
 </project>

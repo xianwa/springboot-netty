@@ -17,7 +17,7 @@ public class HeartbeatInitializer extends ChannelInitializer<Channel> {
     protected void initChannel(Channel channel) throws Exception {
         channel.pipeline()
                 //五秒没有收到消息 将IdleStateHandler 添加到 ChannelPipeline 中
-                .addLast(new IdleStateHandler(5, 0, 0))
+                .addLast(new IdleStateHandler(15, 0, 0))
                 .addLast(new HeartbeatDecoder())
                 .addLast(new HeartbeatEncode())
                 .addLast(new HeartBeatSimpleHandle());
