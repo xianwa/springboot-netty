@@ -37,6 +37,10 @@ public class HeartbeatClient {
 
     @PostConstruct
     public void start() {
+        retryConnect();
+    }
+
+    public void retryConnect() {
         try {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(group).channel(NioSocketChannel.class).handler(new CustomerHandleInitializer());

@@ -73,7 +73,7 @@ public class EchoClientHandle extends SimpleChannelInboundHandler<CustomProtocol
             public void run() {
                 heartbeatClient.doConnect();
             }
-        }, 5L, TimeUnit.SECONDS);
+        }, 1L, TimeUnit.SECONDS);
         super.channelInactive(ctx);
     }
 }

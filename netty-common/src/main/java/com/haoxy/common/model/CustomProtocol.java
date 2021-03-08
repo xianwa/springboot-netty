@@ -12,6 +12,15 @@ public class CustomProtocol  implements Serializable {
     private long comId;
     private int sendType;
     private String content;
+    private String key;
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
 
     public long getComId() {
         return comId;
@@ -38,10 +47,11 @@ public class CustomProtocol  implements Serializable {
         this.sendType = sendType;
     }
 
-    public CustomProtocol(long comId, int sendType, String content) {
+    public CustomProtocol(long comId, int sendType, String content, String key) {
         this.comId = comId;
         this.sendType = sendType;
         this.content = content;
+        this.key = key;
     }
 
     public CustomProtocol() {

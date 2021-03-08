@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<CustomProtocol> {
 
     private final static Logger logger = LoggerFactory.getLogger(HeartBeatSimpleHandle.class);
-    private static final CustomProtocol HEART_BEAT = new CustomProtocol(123456L, CustomProtocol.SendType.HEART.code, "pong");
+    private static final CustomProtocol HEART_BEAT = new CustomProtocol(123456L, CustomProtocol.SendType.HEART.code, "pong","heartKey");
 
     /**
      * 取消绑定
