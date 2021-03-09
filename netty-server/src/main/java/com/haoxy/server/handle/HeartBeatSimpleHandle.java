@@ -1,5 +1,7 @@
 package com.haoxy.server.handle;
 
+import com.google.common.collect.Maps;
+
 import com.fksaas.tms.common.utils.JacksonUtil;
 import com.haoxy.common.model.CustomProtocol;
 import com.haoxy.server.util.NettySocketHolder;
@@ -13,6 +15,8 @@ import io.netty.handler.timeout.IdleStateEvent;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 /**
  * Created by haoxy on 2018/10/17. E-mail:hxyHelloWorld@163.com github:https://github.com/haoxiaoyong1014
@@ -51,29 +55,30 @@ public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<String> {
     protected void channelRead0(ChannelHandlerContext ctx, String msg) throws Exception {
         // todo 上线
         logger.info("收到customProtocol={}", msg);
+        CustomProtocol customProtocol = JacksonUtil.deSerialize(msg,CustomProtocol.class);
         //我们调用writeAndFlush（Object）来逐字写入接收到的消息并刷新线路
-//        try {
-//            if (customProtocol != null) {
-//                if (customProtocol.getComId() == 1) {
-//                    customProtocol.setContent("1的响应");
-//                    ctx.writeAndFlush(customProtocol);
-//                }
-//                if (customProtocol.getComId() == 2) {
-//                    customProtocol.setContent("2的响应");
-//                    ctx.writeAndFlush(customProtocol);
-//                }
-//                if(customProtocol.getSendType() == CustomProtocol.SendType.TMS_LOGIN.code){
-//                    Map<String,Object> respMap = Maps.newHashMap();
-//                    respMap.put("successFlag",true);
-//                    respMap.put("comShortName","城南华丰");
-//                    customProtocol.setContent(JacksonUtil.serialize(respMap));
-//                    ctx.writeAndFlush(customProtocol);
-//                }
-//            }
-//        } catch (Exception e) {
-//            logger.error("服务端读取客户端消息异常,e:", e);
-//        }
-//        //保存客户端与 Channel 之间的关系
-//        NettySocketHolder.put(customProtocol.getComId(), (NioSocketChannel) ctx.channel());
+        try {
+            if (customProtocol != null) {
+                if (customProtocol.getComId() == 1) {
+                    customProtocol.setContent("1的响应");
+                    ctx.writeAndFlush(customProtocol);
+                }
+                if (customProtocol.getComId() == 2) {
+                    customProtocol.setContent("2的响应");
+                    ctx.writeAndFlush(customProtocol);
+                }
+                if(customProtocol.getSendType() == CustomProtocol.SendType.TMS_LOGIN.code){
+                    Map<String,Object> respMap = Maps.newHashMap();
+                    respMap.put("successFlag",true);
+                    respMap.put("comShortName","城南华丰");
+                    customProtocol.setContent(JacksonUtil.serialize(respMap));
+                    ctx.writeAndFlush(customProtocol);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("服务端读取客户端消息异常,e:", e);
+        }
+        //保存客户端与 Channel 之间的关系
+        NettySocketHolder.put(customProtocol.getComId(), (NioSocketChannel) ctx.channel());
     }
 }
