@@ -1,5 +1,6 @@
 package com.haoxy.client.heart;
 
+import com.fksaas.tms.common.utils.JacksonUtil;
 import com.haoxy.client.init.CustomerHandleInitializer;
 import com.haoxy.common.model.CustomProtocol;
 
@@ -74,7 +75,7 @@ public class HeartbeatClient {
                 e.printStackTrace();
             }
         }
-        socketChannel.writeAndFlush(customProtocol);
+        socketChannel.writeAndFlush(JacksonUtil.serialize(customProtocol));
     }
 
     /**

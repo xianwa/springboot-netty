@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  * 目前，只需继承 SimpleChannelInboundHandler或ChannelInboundHandlerAdapter 而不是自己实现处理程序接口。
  * 我们在这里重写了channelRead0（）事件处理程序方法
  */
-public class EchoClientHandle extends SimpleChannelInboundHandler<CustomProtocol> {
+public class EchoClientHandle extends SimpleChannelInboundHandler<String> {
 
     private final static Logger logger = LoggerFactory.getLogger(EchoClientHandle.class);
 
@@ -42,7 +42,7 @@ public class EchoClientHandle extends SimpleChannelInboundHandler<CustomProtocol
                 logger.info("已经10秒没推送消息了");
                 //向服务端发送消息
                 CustomProtocol heartBeat = SpringBeanFactory.getBean("heartBeat", CustomProtocol.class);
-                ctx.writeAndFlush(heartBeat).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
+                ctx.writeAndFlush(JacksonUtil.serialize(heartBeat)).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);
             }
 
         }
@@ -53,13 +53,13 @@ public class EchoClientHandle extends SimpleChannelInboundHandler<CustomProtocol
      * 每当从服务端接收到新数据时，都会使用收到的消息调用此方法 channelRead0(),在此示例中，接收消息的类型是ByteBuf。
      *
      * @param channelHandlerContext
-     * @param customProtocol
+     * @param msg
      * @throws Exception
      */
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, CustomProtocol customProtocol) throws Exception {
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, String msg) throws Exception {
         //从服务端收到消息时被调用
-        logger.info("客户端收到消息={}", JacksonUtil.serialize(customProtocol));
+        logger.info("客户端收到消息={}", msg);
     }
 
     @Override
