@@ -19,9 +19,9 @@ public class HeartbeatInitializer extends ChannelInitializer<Channel> {
         String delimiter = "_$@^%";
         channel.pipeline()
                 //五秒没有收到消息 将IdleStateHandler 添加到 ChannelPipeline 中
-                .addLast(new IdleStateHandler(15, 0, 0))
-                .addLast(new DelimiterBasedFrameDecoder(Integer.MAX_VALUE,
-                        Unpooled.wrappedBuffer(delimiter.getBytes())))
+                .addLast(new IdleStateHandler(10, 0, 0))
+                // 5M
+                .addLast(new DelimiterBasedFrameDecoder(5242880, Unpooled.wrappedBuffer(delimiter.getBytes())))
                 // 将分隔之后的字节数据转换为字符串数据
                 .addLast(new StringDecoder())
                 // 这是我们自定义的一个编码器，主要作用是在返回的响应数据最后添加分隔符

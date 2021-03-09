@@ -21,8 +21,9 @@ public class CustomerHandleInitializer extends ChannelInitializer<Channel> {
         String delimiter = "_$@^%";
         channel.pipeline()
                 //10 秒没发送消息 将IdleStateHandler 添加到 ChannelPipeline 中
-                .addLast(new IdleStateHandler(10, 10, 0))
-                .addLast(new DelimiterBasedFrameDecoder(Integer.MAX_VALUE,
+                .addLast(new IdleStateHandler(5, 5, 0))
+                // 5M
+                .addLast(new DelimiterBasedFrameDecoder(5242880,
                         Unpooled.wrappedBuffer(delimiter.getBytes())))
                 // 将分隔之后的字节数据转换为字符串数据
                 .addLast(new StringDecoder())
