@@ -1,5 +1,6 @@
 package com.haoxy.server.handle;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 
 import com.fksaas.tms.common.utils.JacksonUtil;
@@ -16,7 +17,12 @@ import io.netty.handler.timeout.IdleStateEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * Created by haoxy on 2018/10/17. E-mail:hxyHelloWorld@163.com github:https://github.com/haoxiaoyong1014
@@ -59,9 +65,24 @@ public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<String> {
         //我们调用writeAndFlush（Object）来逐字写入接收到的消息并刷新线路
         try {
             if (customProtocol != null) {
-                if (customProtocol.getComId() == 1) {
-                    customProtocol.setContent("1的响应");
-                    ctx.writeAndFlush(JacksonUtil.serialize(customProtocol));
+                if(customProtocol.getComId() == 1){
+                    // 测试并发时的代码，会内存溢出，谨慎打开
+//                    try {
+//                        ExecutorService executorService = Executors.newFixedThreadPool(10);
+//                        List<Callable<Object>> runnableList = Lists.newArrayList();
+//                        for (int i = 0; i < 10; i++) {
+//                            final int finalI = i;
+//                            runnableList.add(()->{
+//                                CustomProtocol customProtocol1 = new CustomProtocol(finalI, 1, "$" + String.join("", Collections.nCopies(2048, String.valueOf(finalI)) + "$")
+//                                );
+//                                ctx.writeAndFlush(JacksonUtil.serialize(customProtocol1));
+//                                return null;
+//                            });
+//                        }
+//                        executorService.invokeAll(runnableList);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
                 }
                 if (customProtocol.getComId() == 2) {
                     customProtocol.setContent("2的响应");

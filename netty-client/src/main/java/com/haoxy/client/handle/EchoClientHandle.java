@@ -1,5 +1,7 @@
 package com.haoxy.client.handle;
 
+import com.google.common.collect.Lists;
+
 import com.fksaas.tms.common.utils.JacksonUtil;
 import com.haoxy.client.heart.HeartbeatClient;
 import com.haoxy.client.util.SpringBeanFactory;
@@ -15,6 +17,11 @@ import io.netty.handler.timeout.IdleStateEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Collections;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -60,6 +67,26 @@ public class EchoClientHandle extends SimpleChannelInboundHandler<String> {
     protected void channelRead0(ChannelHandlerContext channelHandlerContext, String msg) throws Exception {
         //从服务端收到消息时被调用
         logger.info("客户端收到消息={}", msg);
+        CustomProtocol customProtocol = JacksonUtil.deSerialize(msg,CustomProtocol.class);
+        if(customProtocol.getComId() == 1){
+            // 测试并发时的代码，会内存溢出，谨慎打开
+//            try {
+//                ExecutorService executorService = Executors.newFixedThreadPool(10);
+//                List<Callable<Object>> runnableList = Lists.newArrayList();
+//                for (int i = 0; i < 3; i++) {
+//                    final int finalI = i;
+//                    runnableList.add(()->{
+//                        CustomProtocol customProtocol1 = new CustomProtocol(finalI, 2, "$" + String.join("", Collections.nCopies(2048, String.valueOf(finalI)) + "$")
+//                        );
+//                        channelHandlerContext.writeAndFlush(JacksonUtil.serialize(customProtocol1));
+//                        return null;
+//                    });
+//                }
+//                executorService.invokeAll(runnableList);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+        }
     }
 
     @Override
