@@ -48,7 +48,7 @@ public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<String> {
         if (evt instanceof IdleStateEvent) {
             IdleStateEvent idleStateEvent = (IdleStateEvent) evt;
             if (idleStateEvent.state() == IdleState.READER_IDLE) {
-                logger.info("已经5秒没有收到信息！");
+                logger.info("已经10秒没有收到信息！");
                 // todo 下线
                 //向客户端发送消息
                 ctx.writeAndFlush(JacksonUtil.serialize(HEART_BEAT)).addListener(ChannelFutureListener.CLOSE_ON_FAILURE);

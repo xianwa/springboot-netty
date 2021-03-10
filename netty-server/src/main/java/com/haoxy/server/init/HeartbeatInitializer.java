@@ -18,7 +18,7 @@ public class HeartbeatInitializer extends ChannelInitializer<Channel> {
     protected void initChannel(Channel channel) throws Exception {
         String delimiter = "_$@^%";
         channel.pipeline()
-                //五秒没有收到消息 将IdleStateHandler 添加到 ChannelPipeline 中
+                //10秒没有收到消息 将IdleStateHandler 添加到 ChannelPipeline 中
                 .addLast(new IdleStateHandler(10, 0, 0))
                 // 5M
                 .addLast(new DelimiterBasedFrameDecoder(5242880, Unpooled.wrappedBuffer(delimiter.getBytes())))
