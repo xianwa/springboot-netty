@@ -65,6 +65,7 @@ public class EchoClientHandle extends SimpleChannelInboundHandler<String> {
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         System.err.println("掉线了...");
+        // todo 完善断线重连的逻辑
         //使用过程中断线重连
         final HeartbeatClient heartbeatClient = SpringBeanFactory.getBean("heartbeatClient", HeartbeatClient.class);
         final EventLoop eventLoop = ctx.channel().eventLoop();

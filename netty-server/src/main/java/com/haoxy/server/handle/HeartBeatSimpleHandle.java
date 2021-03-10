@@ -61,18 +61,18 @@ public class HeartBeatSimpleHandle extends SimpleChannelInboundHandler<String> {
             if (customProtocol != null) {
                 if (customProtocol.getComId() == 1) {
                     customProtocol.setContent("1的响应");
-                    ctx.writeAndFlush(customProtocol);
+                    ctx.writeAndFlush(JacksonUtil.serialize(customProtocol));
                 }
                 if (customProtocol.getComId() == 2) {
                     customProtocol.setContent("2的响应");
-                    ctx.writeAndFlush(customProtocol);
+                    ctx.writeAndFlush(JacksonUtil.serialize(customProtocol));
                 }
                 if(customProtocol.getSendType() == CustomProtocol.SendType.TMS_LOGIN.code){
                     Map<String,Object> respMap = Maps.newHashMap();
                     respMap.put("successFlag",true);
                     respMap.put("comShortName","城南华丰");
                     customProtocol.setContent(JacksonUtil.serialize(respMap));
-                    ctx.writeAndFlush(customProtocol);
+                    ctx.writeAndFlush(JacksonUtil.serialize(customProtocol));
                 }
             }
         } catch (Exception e) {
